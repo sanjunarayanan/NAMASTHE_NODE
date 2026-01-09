@@ -1,0 +1,29 @@
+{
+  "name": "dev-tinder",
+  "version": "1.0.0",
+  "description": "a sample node js application",
+  "keywords": [
+    "node",
+    "js",
+    "express",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/sanjunarayanan/NAMASTHE_NODE#readme",
+  "bugs": {
+    "url": "https://github.com/sanjunarayanan/NAMASTHE_NODE/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sanjunarayanan/NAMASTHE_NODE.git"
+  },
+  "license": "ISC",
+  "author": "sanju",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
