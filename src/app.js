@@ -1,12 +1,18 @@
 import express from 'express'
+import connectDb from './config/database.js'
+import User from './models/user.model.js'
 const app = express()
 
-app.get('/error', (req, res, next) => {
-  next(new Error('Boom 💥'))
-})
+await connectDb()
 
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message })
+app.post('/signup', async (req,res) => {
+  const sanju = new User({
+    firstName: 'sachin',
+    lastName: 'tendulkar',
+    address: 'India House',
+  })
+  await sanju.save()
+  res.send('user successfully added')
 })
 
 app.listen(3000, () => {
