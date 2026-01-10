@@ -1,12 +1,22 @@
-const express = require('express')
+import express from 'express'
+import { auth } from './middlewares/auth.middleware.js'
 const app = express()
 
-app.use('/test', (req, res) => {
-  res.send('Hello World Testing!..')
+app.get('/user', (req, res) => {
+  res.send('Hello Hai')
 })
 
-app.use('/hello', (req, res) => {
-  res.send('Hello World Testing!..')
+app.get('/admin/getAllUSers', auth, (req, res) => {
+  res.json([
+    {
+      firstName: 'sanju',
+      lastName: 'v',
+    },
+    {
+      firstName: 'yuvaan',
+      lastName: 'Madhav',
+    },
+  ])
 })
 
 app.listen(3000, () => {

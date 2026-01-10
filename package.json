@@ -18,10 +18,11 @@
   },
   "license": "ISC",
   "author": "sanju",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch src/app.js"
+    "dev": "node --watch src/app.js",
+    "start": "node src/app.js"
   },
   "dependencies": {
     "express": "^5.2.1"
