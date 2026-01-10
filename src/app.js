@@ -7,8 +7,8 @@ await connectDb()
 
 app.post('/signup', async (req,res) => {
   const sanju = new User({
-    firstName: 'sachin',
-    lastName: 'tendulkar',
+    firstName: 'sain',
+    lastName: 'tegular',
     address: 'India House',
   })
   await sanju.save()
