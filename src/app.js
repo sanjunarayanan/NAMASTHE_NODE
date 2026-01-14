@@ -1,10 +1,15 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
+import cookieParser from 'cookie-parser'
+import jwt from 'jsonwebtoken'
 import connectDb from './config/database.js'
 import User from './models/user.model.js'
 import validateSignupData from './config/validator.js'
+import tokenCheckerMiddleware from './middlewares/tokenChecker.middleware.js'
+
 const app = express()
 app.use(express.json())
+app.use(cookieParser())
 await connectDb()
 
 app.post('/signup', async (req, res) => {
@@ -35,11 +40,24 @@ app.post('/login', async (req, res) => {
     if (!isValidPassword) {
       throw new Error('Password is not correct..!')
     }
+    // add the cookie
+    const token = await jwt.sign({ userId: user._id }, 'JWT_SECRET', {
+      expiresIn: '1m',
+    })
+    res.cookie('token', token)
     return res.status(201).send('Happy Login')
   } catch (error) {
     return res
       .status(400)
       .send(`Error while fetching the user : ${error.message}`)
+  }
+})
+
+app.get('/profile', tokenCheckerMiddleware, async (req, res) => {
+  try {
+    res.send(`Hello ${req.user.firstName} ${req.user.lastName}`)
+  } catch (error) {
+    return res.status(400).send(`Error : ${error.message}`)
   }
 })
 
