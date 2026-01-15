@@ -1,7 +1,6 @@
 import express from 'express'
 import bcrypt from 'bcryptjs'
 import cookieParser from 'cookie-parser'
-import jwt from 'jsonwebtoken'
 import connectDb from './config/database.js'
 import User from './models/user.model.js'
 import validateSignupData from './config/validator.js'
@@ -17,7 +16,6 @@ app.post('/signup', async (req, res) => {
     validateSignupData(req)
     const { password } = req.body
     const passwordHash = await bcrypt.hash(password, 10)
-    console.log('passwordHash : ', passwordHash)
     const user = new User({
       ...req.body,
       password: passwordHash,
@@ -36,14 +34,12 @@ app.post('/login', async (req, res) => {
     if (!user) {
       throw new Error('Email Id is not matched..!')
     }
-    const isValidPassword = await bcrypt.compare(password, user.password)
+    const isValidPassword = await user.validatePassword(password)
     if (!isValidPassword) {
       throw new Error('Password is not correct..!')
     }
     // add the cookie
-    const token = await jwt.sign({ userId: user._id }, 'JWT_SECRET', {
-      expiresIn: '1m',
-    })
+    const token = await user.getJWT();
     res.cookie('token', token)
     return res.status(201).send('Happy Login')
   } catch (error) {
