@@ -7,7 +7,6 @@ import Connection from '../models/connection.model.js'
 
 const router = express.Router()
 
-
 router.post(
   '/send/:toUserId',
   tokenCheckerMiddleware,
@@ -54,7 +53,6 @@ router.post(
   }
 )
 
-
 router.post(
   '/receive/:requestId',
   tokenCheckerMiddleware,
@@ -84,10 +82,6 @@ router.post(
         message: `Connection ${status}`,
         data: connection,
       })
-
-     
-
-     
     } catch (error) {
       console.error(error)
       return res.status(500).send(error.message)

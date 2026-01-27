@@ -8,7 +8,8 @@ router.get('/view', tokenCheckerMiddleware, async (req, res) => {
   try {
     res.send(`Hello ${req.user.firstName} ${req.user.lastName}`)
   } catch (error) {
-    return res.status(400).send(`Error : ${error.message}`)
+    console.error(error)
+    return res.status(500).send(error.message)
   }
 })
 
@@ -34,7 +35,8 @@ router.patch('/edit', tokenCheckerMiddleware, async (req, res) => {
       loggedInUser,
     })
   } catch (error) {
-    return res.status(400).send(`Error : ${error.message}`)
+    console.error(error)
+    return res.status(500).send(error.message)
   }
 })
 
@@ -50,7 +52,8 @@ router.patch('/change-password', tokenCheckerMiddleware, async (req, res) => {
     user.save()
     return res.send('Password updated successfully')
   } catch (error) {
-    return res.status(400).send(error.message)
+    console.error(error)
+    return res.status(500).send(error.message)
   }
 })
 

@@ -18,7 +18,8 @@ router.post('/signup', async (req, res) => {
     await user.save()
     return res.status(201).send('User added successfully')
   } catch (error) {
-    return res.status(400).send(`Error saving the user : ${error.message}`)
+    console.error(error)
+    return res.status(500).send(error.message)
   }
 })
 
@@ -38,9 +39,8 @@ router.post('/login', async (req, res) => {
     res.cookie('token', token)
     return res.status(201).send('Happy Login')
   } catch (error) {
-    return res
-      .status(400)
-      .send(`Error while fetching the user : ${error.message}`)
+    console.error(error)
+    return res.status(500).send(error.message)
   }
 })
 
