@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/view', tokenCheckerMiddleware, async (req, res) => {
   try {
-    res.send(`Hello ${req.user.firstName} ${req.user.lastName}`)
+    res.send(req.user)
   } catch (error) {
     console.error(error)
     return res.status(500).send(error.message)

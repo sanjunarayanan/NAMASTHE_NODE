@@ -6,8 +6,14 @@ import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import usersRoutes from './routes/users.routes.js'
 import connectionRoutes from './routes/connections.routes.js'
-
+import cors from 'cors'
 const app = express()
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+  }),
+)
 app.use(express.json())
 app.use(cookieParser())
 await connectDb()

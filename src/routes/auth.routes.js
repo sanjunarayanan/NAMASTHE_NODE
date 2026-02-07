@@ -26,21 +26,49 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message: 'Email and password required',
+      })
+    }
+
     const user = await User.findOne({ email })
     if (!user) {
-      throw new Error('Email Id is not matched..!')
+      return res.status(401).json({
+        message: 'Invalid credentials',
+      })
     }
     const isValidPassword = await user.validatePassword(password)
+
     if (!isValidPassword) {
-      throw new Error('Password is not correct..!')
+      return res.status(401).json({
+        message: 'Invalid credentials',
+      })
     }
+
     // add the cookie
     const token = await user.getJWT()
-    res.cookie('token', token)
-    return res.status(201).send('Happy Login')
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    })
+
+    return res.status(200).json({
+      message: 'Login successful',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    })
   } catch (error) {
     console.error(error)
-    return res.status(500).send(error.message)
+    return res.status(500).json({
+      message: 'Something went wrong',
+    })
   }
 })
 
